@@ -7,7 +7,6 @@ namespace AppOwnsData.Controllers
 {
     using AppOwnsData.Models;
     using AppOwnsData.Services;
-    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using System;
@@ -16,7 +15,6 @@ namespace AppOwnsData.Controllers
     using System.Linq;
     using System.Threading.Tasks;
 
-    [Authorize]
     public class EmbedInfoController : Controller
     {
         private readonly PbiEmbedService pbiEmbedService;
@@ -64,4 +62,3 @@ namespace AppOwnsData.Controllers
         }
     }
 }
-

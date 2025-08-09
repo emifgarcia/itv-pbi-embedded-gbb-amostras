@@ -7,13 +7,11 @@ namespace AppOwnsData
 {
     using AppOwnsData.Models;
     using AppOwnsData.Services;
-    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.IdentityModel.Tokens;
 
     public class Startup
     {
@@ -30,21 +28,6 @@ namespace AppOwnsData
             // Register AadService and PbiEmbedService for dependency injection
             services.AddScoped(typeof(AadService))
                     .AddScoped(typeof(PbiEmbedService));
-
-            // Configura autenticação JWT usando Keycloak
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = "https://azusdstiapp-e8bxc3d5hmczfqbu.eastus-01.azurewebsites.net/realms/VALE";
-                    options.Audience = "powerbi-embedded";
-                    options.RequireHttpsMetadata = true;
-
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateAudience = true,
-                        ValidateIssuer = true
-                    };
-                });
 
             services.AddControllersWithViews();
 
@@ -63,6 +46,7 @@ namespace AppOwnsData
             else
             {
                 app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
@@ -70,7 +54,6 @@ namespace AppOwnsData
 
             app.UseRouting();
 
-            app.UseAuthentication(); // Habilita autenticação
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -82,4 +65,3 @@ namespace AppOwnsData
         }
     }
 }
-
